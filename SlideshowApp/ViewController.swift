@@ -36,6 +36,21 @@ class ViewController: UIViewController {
         let imageName = imageArray[imageNumber]
         imageView.image = UIImage(named: imageName)
     }
+    
+    func stopSlideShow(){
+        nextButton.isEnabled = true
+        backButton.isEnabled = true
+        ssButton.setTitle("再生", for: .normal)
+        self.timer.invalidate()
+        self.timer = nil
+    }
+    
+    func startSlideShow(){
+        nextButton.isEnabled = false
+        backButton.isEnabled = false
+        ssButton.setTitle("停止", for: .normal)
+        self.timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
+    }
 
     @IBAction func backAction(_ sender: Any) {
         imageNumber -= 1
@@ -51,25 +66,22 @@ class ViewController: UIViewController {
     }
     @IBAction func ssAction(_ sender: Any) {
         if self.timer == nil {
-            nextButton.isEnabled = false
-            backButton.isEnabled = false
-            ssButton.setTitle("停止", for: .normal)
-            self.timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
+            startSlideShow()
         } else {
-            nextButton.isEnabled = true
-            backButton.isEnabled = true
-            ssButton.setTitle("再生", for: .normal)
-            self.timer.invalidate()
-            self.timer = nil
+            stopSlideShow()
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let nextViewController = segue.destination as! NextViewController
         nextViewController.image = UIImage(named: imageArray[imageNumber])
+        stopSlideShow()
     }
     
+    
     @IBAction func unwind(_ segue: UIStoryboardSegue){
+        startSlideShow()
+        
         
     }
 

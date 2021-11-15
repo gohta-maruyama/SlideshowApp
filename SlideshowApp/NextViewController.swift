@@ -17,7 +17,9 @@ class NextViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         detailImageView.image = image
+    
     }
+
 
     
     
